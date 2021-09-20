@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
+from django.db.models import Avg, Count, Min, Sum
 from .models import Account, User
 from .forms import Account_creation_Model_Form, Account_add_money_Model_Form
 # Create your views here.
@@ -64,12 +65,16 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-def profile(request):
-    user = request.user
-    all_accounts = Account.objects.filter(account_owner=user)
+def profile(request, user_pk):    
+    
+    user_pk = User.objects.get(pk = user_pk)
+    all_accounts = Account.objects.filter(account_owner=user_pk)
+    how_much_money = Account.objects.filter(account_owner=user_pk).aggregate(Sum('money'))
+    print(how_much_money)
     return render(request, "account/profile.html", {
-        "user": user,
+        "user_pk": user_pk,
         "all_accounts":all_accounts,
+        "how_much_money": how_much_money,
     })
 
 # создание счета (не профиль) (на странице профиля)
@@ -103,9 +108,15 @@ def delete_account(request, account_pk):
     
     
 # добавить деньги на счет
-def add_money(request):
+def add_money(request, account_pk):
     if request.method == "POST":
-        pass
+        form = Account_add_money_Model_Form(request.POST)
+        if form.is_valid():        
+            account_owner = request.user
+            money = form.cleaned_data["money"]
+        
+        
+            pass
     else:
         user = request.user
         add_money = True

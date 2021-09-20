@@ -1,3 +1,10 @@
+.outline {
+    outline: 2px solid rgb(184, 184, 184);
+    text-align: left;
+    padding: 20px;
+    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
+}
+
 /* profile */
 .inf-content {
     border: 1px solid #DDDDDD;

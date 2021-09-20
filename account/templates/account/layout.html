@@ -49,7 +49,7 @@
         </ul>
         {% if user.is_authenticated %}
         <span class="navbar-text">
-            пользователь: <a href="{% url 'profile' %}"> <b>{{user}}</b> </a>                      
+            пользователь: <a href="{% url 'profile' user.id %}"> <b>{{user}}</b> </a>                      
         </span>  
         {% endif %}
         </div>
