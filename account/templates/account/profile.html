@@ -119,12 +119,14 @@
 
 <hr>
 
+{{ message }}
+
 <a href="{% url 'create_account' %}" class="btn btn-primary">Создать счет</a>
 <button type="button" class="btn btn-secondary">Перевести деньги на чужой счет</button>
-<button type="button" class="btn btn-success">Добавить деньги себе на счет</button>
 
 
-{% comment %} Если кнопка "создать счет" {% endcomment %}
+
+{% comment %} Если кнопка "СОЗДАТЬ СЧЕТ" {% endcomment %}
 {% if create_account %}
     <form action="{% url 'create_account' %}" method="POST" class="mt-4">
         {% csrf_token %}
@@ -132,23 +134,45 @@
         <input type="submit" value="Submit" class="btn btn-primary">    
     </form>
 {% endif %}
+
+
+
+
+
+
+
+
 <hr>
 
    
 {% comment %} Карты {% endcomment %}
 Все счета:
+{% for i in all_accounts  %}
 <div>
     <div class="card p-3">
         <div> <img src="https://i.imgur.com/EuJhBLz.png" width="50"> </div>
-        <div class=" mt-4 px-2 number d-flex justify-content-between"> <span>Сбербанк</span> </div>
+        <div class=" mt-4 px-2 number d-flex justify-content-between"> <span>{{i.account_name}}</span> </div>
         <div class="px-2 mt-4 d-flex justify-content-between align-items-center">
-            <div class="user-details"> <span>56000</span> <span class="ms-3">Рублей</span> </div>
+            <div class="user-details"> <span>{{i.money}}</span> <span class="ms-3">Рублей</span> </div>
             <div> <img src="https://i.imgur.com/tZf6pSo.png" width="50"> </div>
         </div>
     </div>
 </div> 
-<button type="button" class="btn btn-danger mt-3">Удалить счет</button>
+
+<a href="{% url 'delete_account' i.id %}" class="btn btn-danger mt-3">Удалить счет</a>
+<a href="{% url 'add_money' %}" class="btn btn-success mt-3">Добавить деньги себе на счет</a>
+
+{% comment %} Если кнопка "ДОБАВИТЬ ДЕНЬГИ" {% endcomment %}
+{% if add_money %}
+    <form action="{% url 'create_account' %}" method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" class="btn btn-primary">    
+    </form>
+{% endif %}
+
 <hr>
+{% endfor %}
 
 
 

@@ -19,3 +19,12 @@ class Account_creation_Model_Form(forms.ModelForm):
             'account_name': forms.TextInput(attrs={"class": "form-control"}),
         }
        
+
+class Account_add_money_Model_Form(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ['money']
+        labels = {'money': 'Сколько денег добавить:'}
+        widgets = {
+            'money': forms.NumberInput(attrs={"class": "form-control", "step": 0.01}),
+        }

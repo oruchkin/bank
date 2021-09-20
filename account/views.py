@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Account, User
-from .forms import Account_creation_Model_Form
+from .forms import Account_creation_Model_Form, Account_add_money_Model_Form
 # Create your views here.
 
 def index(request):
@@ -66,8 +66,10 @@ def logout_view(request):
 
 def profile(request):
     user = request.user
+    all_accounts = Account.objects.filter(account_owner=user)
     return render(request, "account/profile.html", {
         "user": user,
+        "all_accounts":all_accounts,
     })
 
 # создание счета (не профиль) (на странице профиля)
@@ -89,4 +91,28 @@ def create_account(request):
             "user": user,
             "create_account": create_account,
             "form": form,
+            "all_accounts": Account.objects.filter(account_owner=user),
+        })
+
+
+# удалить счет
+def delete_account(request, account_pk):
+    object_to_delete = Account.objects.get(pk=account_pk)
+    object_to_delete.delete()
+    return HttpResponseRedirect(reverse("profile"))
+    
+    
+# добавить деньги на счет
+def add_money(request):
+    if request.method == "POST":
+        pass
+    else:
+        user = request.user
+        add_money = True
+        form = Account_add_money_Model_Form()
+        return render(request, "account/profile.html", {
+            "user": user,
+            "add_money": add_money,
+            "form": form,
+            "all_accounts": Account.objects.filter(account_owner=user),
         })
