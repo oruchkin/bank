@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block title %}
-    Register
+    Профайл
 {% endblock title%}
 
 {% block body %}
 <br><br>
 {% comment %} профиль {% endcomment %}
-<div class="container bootstrap snippets bootdey">
+<div class="bootstrap snippets bootdey">
     <div class="panel-body inf-content mt-4">
         <div class="row">
             <div class="col-md-4">
@@ -45,7 +45,7 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                Bootdey     
+                                Олег     
                             </td>
                         </tr>
                         <tr>        
@@ -93,6 +93,17 @@
                                 {{user.date_joined}} 
                             </td>
                         </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                    Всего денег:                                              
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                                10014141 руб
+                            </td>
+                        </tr>
 
                                 
                     </tbody>
@@ -104,10 +115,29 @@
     </div>
 
 </div>
+<br><br>
 
-   <br>
+<hr>
+
+<a href="{% url 'create_account' %}" class="btn btn-primary">Создать счет</a>
+<button type="button" class="btn btn-secondary">Перевести деньги на чужой счет</button>
+<button type="button" class="btn btn-success">Добавить деньги себе на счет</button>
+
+
+{% comment %} Если кнопка "создать счет" {% endcomment %}
+{% if create_account %}
+    <form action="{% url 'create_account' %}" method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" class="btn btn-primary">    
+    </form>
+{% endif %}
+<hr>
+
+   
 {% comment %} Карты {% endcomment %}
-<div class="container   align-items-center">
+Все счета:
+<div>
     <div class="card p-3">
         <div> <img src="https://i.imgur.com/EuJhBLz.png" width="50"> </div>
         <div class=" mt-4 px-2 number d-flex justify-content-between"> <span>Сбербанк</span> </div>
@@ -116,6 +146,11 @@
             <div> <img src="https://i.imgur.com/tZf6pSo.png" width="50"> </div>
         </div>
     </div>
-</div>
+</div> 
+<button type="button" class="btn btn-danger mt-3">Удалить счет</button>
+<hr>
 
+
+
+<br><br><br><br><br><br>
 {% endblock body %}

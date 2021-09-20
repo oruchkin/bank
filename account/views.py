@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
-from .models import User
-
+from .models import Account, User
+from .forms import Account_creation_Model_Form
 # Create your views here.
 
 def index(request):
@@ -69,3 +69,24 @@ def profile(request):
     return render(request, "account/profile.html", {
         "user": user,
     })
+
+# создание счета (не профиль) (на странице профиля)
+def create_account(request):
+    if request.method == "POST":
+        form = Account_creation_Model_Form(request.POST)
+        if form.is_valid():
+            account_owner = request.user
+            account_name = form.cleaned_data["account_name"]
+            new_account = Account(account_owner=account_owner,account_name=account_name)
+            new_account.save()
+            return HttpResponseRedirect(reverse("profile"))
+    
+    else:
+        user = request.user
+        create_account = True
+        form = Account_creation_Model_Form()
+        return render(request, "account/profile.html", {
+            "user": user,
+            "create_account": create_account,
+            "form": form,
+        })
