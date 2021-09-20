@@ -6,3 +6,36 @@
     border-radius: 10px;
     box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
 }
+
+/* card */
+.card {
+    background-image: linear-gradient(to right top, #186be7, #1567dc, #1364d1, #1360c6, #145cbb);
+    height: 250px;
+    width: 430px;
+    border-radius: 10px;
+    position: relative
+}
+
+.card:after {
+    content: "";
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    background-color: #fff;
+    opacity: 0.3;
+    border-radius: 50%;
+    left: 35%;
+    top: 70px
+}
+
+.number {
+    font-size: 36px;
+    font-weight: 400;
+    color: #fff
+}
+
+.user-details span {
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #fff
+}
