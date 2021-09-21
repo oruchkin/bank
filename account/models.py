@@ -30,4 +30,4 @@ class Account(models.Model):
     money = models.FloatField(default=0,validators=[MinValueValidator(0.0)])
     
     def __str__(self):
-        return (f"владец:{self.account_owner}, название счета: {self.account_name}")
+        return (f"владец: {self.account_owner}, название счета: {self.account_name}")

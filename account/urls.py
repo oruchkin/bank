@@ -11,6 +11,6 @@ urlpatterns = [
     path("create_account/", views.create_account, name="create_account"),
     path("delete_account/<int:account_pk>",views.delete_account, name="delete_account"),
     path("add_money/<int:account_pk>", views.add_money, name="add_money"),
-    
+    path("move_money/<int:account_pk>", views.move_money, name="move_money"),
     
 ]

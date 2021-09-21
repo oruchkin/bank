@@ -150,3 +150,10 @@ def add_money(request, account_pk):
             "form": form,
             "all_accounts": Account.objects.filter(account_owner=user),
         })
+
+
+def move_money(request, account_pk):
+    current_account = Account.objects.filter(pk=account_pk).first()
+    return render(request, "account/move_money.html",{
+        "current_account": current_account,
+    })
