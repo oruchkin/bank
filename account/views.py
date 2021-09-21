@@ -9,8 +9,13 @@ from .models import Account, User
 from .forms import Account_creation_Model_Form, Account_add_money_Model_Form
 # Create your views here.
 
+
 def index(request):
-    return render(request, "account/index.html")
+    all_users = User.objects.all()
+    
+    return render(request, "account/index.html",{
+        "all_users": all_users,
+    })
 
 
 def register(request):
@@ -69,12 +74,19 @@ def profile(request, user_pk):
     
     user_pk = User.objects.get(pk = user_pk)
     all_accounts = Account.objects.filter(account_owner=user_pk)
-    how_much_money = Account.objects.filter(account_owner=user_pk).aggregate(Sum('money'))
-    print(how_much_money["money__sum"])
+    how_much_money = Account.objects.filter(account_owner=user_pk).aggregate(Sum('money'))    
+    
+    page_owner = False
+    if user_pk == request.user:
+        page_owner =True
+        
+    print(page_owner)
+    
     return render(request, "account/profile.html", {
         "user_pk": user_pk,
         "all_accounts":all_accounts,
         "how_much_money": how_much_money["money__sum"],
+        "page_owner": page_owner,
     })
 
 # создание счета (не профиль) (на странице профиля)
@@ -94,6 +106,8 @@ def create_account(request):
         user = request.user
         create_account = True
         form = Account_creation_Model_Form()
+
+            
         return render(request, "account/profile.html", {
             "user": user,
             "create_account": create_account,

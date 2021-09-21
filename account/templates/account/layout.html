@@ -38,6 +38,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'admin:index' %}">Админ панель</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'profile' user.id %}">Личный профиль</a>
+                </li>
             {% else %}
             <li class="nav-item">
             <a class="nav-link active" href="{% url 'login' %}">Авторизация</a>
