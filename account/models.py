@@ -6,15 +6,19 @@ from django.core.validators import MinValueValidator
 
 
 class User(AbstractUser):
-    pass
+    image = models.CharField(max_length=1500, default="https://www.bootdey.com/img/Content/avatar/avatar7.png")
 
 
+
+# delete profile
 class Profile(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.IntegerField(blank=True, null=True)
-    image_file = models.FileField(upload_to='documents/user_img/', blank=True, null=True)
+    image_file = models.FileField(upload_to='documents/user_img/', blank=True, null=True) #delete me
     name = models.CharField(max_length = 150)
     last_name = models.CharField(max_length=150)
+    image = models.CharField(max_length=1500, default="http://bit.ly/3Cvjweh")
+    
     
     def __str__(self):
         return (f"{self.username}")

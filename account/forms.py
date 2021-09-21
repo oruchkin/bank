@@ -26,5 +26,5 @@ class Account_add_money_Model_Form(forms.ModelForm):
         fields = ['money']
         labels = {'money': 'Сколько денег добавить:'}
         widgets = {
-            'money': forms.NumberInput(attrs={"class": "form-control", "step": 0.01}),
+            'money': forms.NumberInput(attrs={"class": "form-control", "step": 0.01, 'min': 0}),
         }

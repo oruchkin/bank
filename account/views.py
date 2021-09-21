@@ -70,11 +70,11 @@ def profile(request, user_pk):
     user_pk = User.objects.get(pk = user_pk)
     all_accounts = Account.objects.filter(account_owner=user_pk)
     how_much_money = Account.objects.filter(account_owner=user_pk).aggregate(Sum('money'))
-    print(how_much_money)
+    print(how_much_money["money__sum"])
     return render(request, "account/profile.html", {
         "user_pk": user_pk,
         "all_accounts":all_accounts,
-        "how_much_money": how_much_money,
+        "how_much_money": how_much_money["money__sum"],
     })
 
 # создание счета (не профиль) (на странице профиля)
@@ -86,7 +86,9 @@ def create_account(request):
             account_name = form.cleaned_data["account_name"]
             new_account = Account(account_owner=account_owner,account_name=account_name)
             new_account.save()
-            return HttpResponseRedirect(reverse("profile"))
+            
+            user_pk = request.user.id
+            return HttpResponseRedirect(reverse("profile", args=[user_pk]))
     
     else:
         user = request.user
@@ -104,19 +106,26 @@ def create_account(request):
 def delete_account(request, account_pk):
     object_to_delete = Account.objects.get(pk=account_pk)
     object_to_delete.delete()
-    return HttpResponseRedirect(reverse("profile"))
+    user_pk = request.user.id
+    return HttpResponseRedirect(reverse("profile", args=[user_pk]))
     
     
 # добавить деньги на счет
 def add_money(request, account_pk):
     if request.method == "POST":
         form = Account_add_money_Model_Form(request.POST)
-        if form.is_valid():        
-            account_owner = request.user
-            money = form.cleaned_data["money"]
-        
-        
-            pass
+        if form.is_valid(): 
+            change_money = form.cleaned_data["money"]
+            money_account = Account.objects.get(pk=account_pk)
+            old_money = money_account.money
+            new_money = old_money + change_money
+            
+            money_account.money = new_money
+            money_account.save()
+            
+            user_pk = request.user.id
+            return HttpResponseRedirect(reverse("profile", args=[user_pk]))
+            
     else:
         user = request.user
         add_money = True
